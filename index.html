@@ -1,215 +1,269 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cadastro de Clientes</title>
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    :root{
-      --bg: #0b0c10; --card:#131417; --line:#2a2f36;
-      --txt:#f5f7fb; --muted:#cfd6e4; --brand:#22c55e; --brand-2:#16a34a;
-      --danger:#ef4444; --warn:#f59e0b; --ink:#0e1014; --glass: rgba(255,255,255,.06);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:linear-gradient(180deg,#0b0c10,#0f1116); color:var(--txt)}
-    header{
-      position:sticky; top:0; z-index:10; backdrop-filter: blur(10px);
-      background:linear-gradient(180deg, rgba(19,20,23,.85), rgba(19,20,23,.55));
-      border-bottom:1px solid var(--glass);
-    }
-    .wrap{max-width:1080px; margin:0 auto; padding:18px 16px; display:flex; gap:14px; align-items:center}
-    header img{height:44px; width:auto; object-fit:contain}
-    h1{margin:0; font-size:20px; letter-spacing:.3px}
-    .badge{margin-left:auto; font-size:12px; color:#9bb0c8; padding:6px 10px; border:1px solid var(--glass); border-radius:999px}
-
-    main{max-width:1080px; margin:28px auto; padding:0 16px}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--glass); border-radius:var(--radius); box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card header{all:unset; display:block; padding:18px 18px 0 18px}
-    .title{font-size:18px; font-weight:700; margin:0 0 4px}
-    .subtitle{font-size:13px; color:var(--muted); margin:0 0 14px}
-
-    form{padding:18px}
-    .row{display:grid; grid-template-columns:1fr; gap:14px}
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-    .grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
-    @media (max-width: 860px){ .grid-2, .grid-3{grid-template-columns:1fr} }
-
-    label{font-size:12px; color:#aeb8ca; display:block; margin:0 0 6px}
-    .field{position:relative}
-    input, select{
-      width:100%; padding:12px 12px; border:1px solid var(--glass); border-radius:12px;
-      background:#0e1014; color:var(--txt); outline:none; transition: .2s border-color, .2s box-shadow;
-    }
-    input::placeholder{color:#8f9bb0}
-    input:focus{border-color:#3a485f; box-shadow:0 0 0 4px rgba(59,130,246,.12)}
-    fieldset{
-      border:1px dashed var(--glass); border-radius:12px; padding:10px 12px; display:flex; gap:18px; align-items:center; flex-wrap: wrap;
-      background: rgba(255,255,255,.02);
-    }
-    fieldset legend{padding:0 6px; font-size:12px; color:#aeb8ca}
-    .radio{display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#dfe7f6}
-
-    .actions{display:flex; gap:10px; justify-content:flex-end; margin-top:4px; padding:0 18px 18px}
-    button{
-      border:0; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer; letter-spacing:.2px;
-      display:inline-flex; align-items:center; gap:10px;
-    }
-    .primary{background:linear-gradient(180deg, var(--brand), var(--brand-2)); color:#07270e}
-    .ghost{background:#0e1014; color:var(--txt); border:1px solid var(--glass)}
-    .danger{background:linear-gradient(180deg, #ef4444, #b91c1c); color:#2b0a0a}
-    .error{color:var(--danger); font-size:12px; margin-top:6px; display:none}
-
-    .statusbar{display:flex; align-items:center; gap:10px; padding:12px 18px; border-top:1px solid var(--glass);
-      background:rgba(0,0,0,.2); font-size:13px; color:#afc4db}
-    .dot{width:8px; height:8px; border-radius:999px; background:#6b7280}
-    .dot.ok{background:var(--brand)}
-    .dot.err{background:var(--danger)}
-
-    .toast{position:fixed; right:16px; bottom:16px; background:#0e1014; color:#fff;
-      border:1px solid var(--glass); border-radius:12px; padding:12px 14px; box-shadow:var(--shadow);
-      transform: translateY(12px); opacity:0; pointer-events:none; transition:.25s; max-width: 420px;}
-    .toast.show{transform: translateY(0); opacity:1}
-    .toast .t{font-weight:700; margin-bottom:4px}
-    .toast .m{font-size:13px; color:#cfd6e4}
-
-    .spinner{width:16px; height:16px; border:2px solid #ffffff30; border-top-color:#fff; border-radius:50%; animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Cadastro e Painel de Clientes</title>
+<meta name="color-scheme" content="dark light"/>
+<style>
+  :root{--bg:#0b0c10;--card:#131417;--line:#2a2f36;--txt:#f5f7fb;--muted:#cfd6e4;--brand:#22c55e;--brand2:#16a34a;--danger:#ef4444;--glass:rgba(255,255,255,.06);--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b0c10,#0f1116);color:var(--txt)}
+  header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(19,20,23,.85),rgba(19,20,23,.55));border-bottom:1px solid var(--glass)}
+  .wrap{max-width:1200px;margin:0 auto;padding:18px 16px;display:flex;gap:14px;align-items:center}
+  header img{height:40px;width:auto;object-fit:contain}
+  h1{margin:0;font-size:20px}
+  .badge{margin-left:auto;font-size:12px;color:#9bb0c8;padding:6px 10px;border:1px solid var(--glass);border-radius:999px}
+  main{max-width:1200px;margin:28px auto;padding:0 16px;display:grid;gap:22px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--glass);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .card header{all:unset;display:block;padding:18px 18px 0 18px}
+  .title{font-size:18px;font-weight:700;margin:0 0 4px}
+  .subtitle{font-size:13px;color:var(--muted);margin:0 0 14px}
+  form{padding:18px}
+  .row{display:grid;grid-template-columns:1fr;gap:14px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media (max-width: 960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+  label{font-size:12px;color:#aeb8ca;display:block;margin:0 0 6px}
+  .field{position:relative}
+  input,select{width:100%;padding:12px;border:1px solid var(--glass);border-radius:12px;background:#0e1014;color:var(--txt);outline:none;transition:.2s}
+  input::placeholder{color:#8f9bb0}
+  input:focus{border-color:#3a485f;box-shadow:0 0 0 4px rgba(59,130,246,.12)}
+  fieldset{border:1px dashed var(--glass);border-radius:12px;padding:10px 12px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,.02)}
+  fieldset legend{padding:0 6px;font-size:12px;color:#aeb8ca}
+  .radio{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#dfe7f6}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px;padding:0 18px 18px}
+  button{border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+  .primary{background:linear-gradient(180deg,var(--brand),var(--brand2));color:#07270e}
+  .ghost{background:#0e1014;color:var(--txt);border:1px solid var(--glass)}
+  .danger{background:linear-gradient(180deg,#ef4444,#b91c1c);color:#2b0a0a}
+  .statusbar{display:flex;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--glass);background:rgba(0,0,0,.2);font-size:13px;color:#afc4db}
+  .dot{width:8px;height:8px;border-radius:999px;background:#6b7280}.dot.ok{background:var(--brand)}.dot.err{background:var(--danger)}
+  .toast{position:fixed;right:16px;bottom:16px;background:#0e1014;color:#fff;border:1px solid var(--glass);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);transform:translateY(12px);opacity:0;pointer-events:none;transition:.25s;max-width:420px}
+  .toast.show{transform:translateY(0);opacity:1}.toast .t{font-weight:700;margin-bottom:4px}.toast .m{font-size:13px;color:#cfd6e4}
+  /* tabela */
+  .toolbar{display:flex;gap:10px;align-items:center;padding:14px 18px 0}
+  .toolbar input{max-width:320px}
+  table{width:100%;border-collapse:separate;border-spacing:0 8px;padding:18px}
+  th{font-size:12px;color:#aeb8ca;text-align:left;padding:0 10px}
+  td{background:#0e1014;border:1px solid var(--glass);padding:10px;border-left:none;border-right:none}
+  tr{border-radius:12px} tr td:first-child{border-left:1px solid var(--glass);border-radius:12px 0 0 12px}
+  tr td:last-child{border-right:1px solid var(--glass);border-radius:0 12px 12px 0}
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <img id="logo" src="LOGO_DO_SEU_NEGOCIO.png" alt="Logo" />
-      <h1>Cadastro de Clientes</h1>
-      <span class="badge">Planilha: CLIENTES</span>
-    </div>
-  </header>
+<header>
+  <div class="wrap">
+    <img src="LOGO_DO_SEU_NEGOCIO.png" alt="Logo"/>
+    <h1>Cadastro & Painel de Clientes</h1>
+    <span class="badge">Planilha: CLIENTES</span>
+  </div>
+</header>
 
-  <main>
-    <section class="card">
-      <header>
-        <p class="title">Novo cliente</p>
-        <p class="subtitle">Preencha os dados abaixo. O documento é validado e o cadastro vai direto para a sua planilha do Google.</p>
-      </header>
+<main>
+  <!-- CARD: FORM -->
+  <section class="card">
+    <header>
+      <p class="title">Novo cliente</p>
+      <p class="subtitle">Preencha e salve. O cadastro vai direto para a planilha.</p>
+    </header>
 
-      <form id="formCliente" autocomplete="off">
-        <div class="row">
-          <fieldset>
-            <legend>Tipo de documento</legend>
-            <label class="radio"><input type="radio" name="tipo" value="CPF" checked /> CPF</label>
-            <label class="radio"><input type="radio" name="tipo" value="CNPJ" /> CNPJ</label>
-          </fieldset>
+    <form id="formCliente" autocomplete="off">
+      <div class="row">
+        <fieldset>
+          <legend>Tipo de documento</legend>
+          <label class="radio"><input type="radio" name="tipo" value="CPF" checked/> CPF</label>
+          <label class="radio"><input type="radio" name="tipo" value="CNPJ"/> CNPJ</label>
+        </fieldset>
 
-          <div class="grid-2">
-            <div class="field">
-              <label id="lblDocumento" for="documento">CPF</label>
-              <input id="documento" name="documento" inputmode="numeric" placeholder="000.000.000-00" maxlength="18" required />
-              <div id="docErro" class="error"></div>
-            </div>
-            <div class="field">
-              <label id="lblNome" for="nome">Nome completo</label>
-              <input id="nome" name="nome" placeholder="Digite o nome completo" required />
-            </div>
+        <div class="grid-2">
+          <div class="field">
+            <label id="lblDocumento" for="documento">CPF</label>
+            <input id="documento" name="documento" inputmode="numeric" placeholder="000.000.000-00" maxlength="18" required/>
+            <div id="docErro" style="color:#ef4444;font-size:12px;margin-top:6px;display:none"></div>
           </div>
-
-          <div id="nascimentoWrap" class="grid-2">
-            <div class="field"><label for="nascimento">Data de nascimento</label><input id="nascimento" name="nascimento" type="date" /></div>
-            <div class="field"><label for="email">E-mail (opcional)</label><input id="email" name="email" type="email" placeholder="email@exemplo.com" /></div>
-          </div>
-
-          <fieldset>
-            <legend>Endereço</legend>
-            <div class="grid-3">
-              <div class="field"><label for="cep">CEP</label><input id="cep" name="cep" inputmode="numeric" placeholder="00000-000" maxlength="9" /></div>
-              <div class="field"><label for="uf">UF</label><input id="uf" name="uf" placeholder="BA" maxlength="2" /></div>
-              <div class="field"><label for="cidade">Cidade</label><input id="cidade" name="cidade" placeholder="Salvador" /></div>
-            </div>
-            <div class="grid-2" style="margin-top:14px">
-              <div class="field"><label for="logradouro">Endereço</label><input id="logradouro" name="logradouro" placeholder="Rua / Avenida" /></div>
-              <div class="field"><label for="numero">Número</label><input id="numero" name="numero" placeholder="Nº" /></div>
-            </div>
-            <div class="grid-2" style="margin-top:14px">
-              <div class="field"><label for="bairro">Bairro</label><input id="bairro" name="bairro" placeholder="Bairro" /></div>
-              <div class="field"><label for="complemento">Complemento</label><input id="complemento" name="complemento" placeholder="Apto, bloco, ponto de ref." /></div>
-            </div>
-          </fieldset>
-
-          <div class="actions">
-            <button type="reset" class="ghost" id="btnReset">Limpar</button>
-            <button type="submit" class="primary" id="btnSubmit"><span>Salvar</span></button>
+          <div class="field">
+            <label id="lblNome" for="nome">Nome completo</label>
+            <input id="nome" name="nome" placeholder="Digite o nome completo" required/>
           </div>
         </div>
-      </form>
 
-      <div class="statusbar"><span class="dot" id="connDot"></span><span id="connText">Sem conexão com a planilha</span></div>
-    </section>
-  </main>
+        <div id="nascimentoWrap" class="grid-2">
+          <div class="field"><label for="nascimento">Data de nascimento</label><input id="nascimento" name="nascimento" type="date"/></div>
+          <div class="field"><label for="email">E-mail (opcional)</label><input id="email" name="email" type="email" placeholder="email@exemplo.com"/></div>
+        </div>
 
-  <div class="toast" id="toast">
-    <div class="t" id="toastTitle">Tudo certo!</div>
-    <div class="m" id="toastMsg">Cliente cadastrado com sucesso.</div>
-  </div>
+        <fieldset>
+          <legend>Endereço</legend>
+          <div class="grid-3">
+            <div class="field"><label for="cep">CEP</label><input id="cep" name="cep" inputmode="numeric" placeholder="00000-000" maxlength="9"/></div>
+            <div class="field"><label for="uf">UF</label><input id="uf" name="uf" placeholder="BA" maxlength="2"/></div>
+            <div class="field"><label for="cidade">Cidade</label><input id="cidade" name="cidade" placeholder="Salvador"/></div>
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="field"><label for="logradouro">Endereço</label><input id="logradouro" name="logradouro" placeholder="Rua / Avenida"/></div>
+            <div class="field"><label for="numero">Número</label><input id="numero" name="numero" placeholder="Nº"/></div>
+          </div>
+          <div class="grid-2" style="margin-top:14px">
+            <div class="field"><label for="bairro">Bairro</label><input id="bairro" name="bairro" placeholder="Bairro"/></div>
+            <div class="field"><label for="complemento">Complemento</label><input id="complemento" name="complemento" placeholder="Apto, bloco, ponto de ref."/></div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="reset" class="ghost" id="btnReset">Limpar</button>
+          <button type="submit" class="primary" id="btnSubmit"><span>Salvar</span></button>
+        </div>
+      </div>
+    </form>
+
+    <div class="statusbar"><span class="dot" id="connDot"></span><span id="connText">Conectando…</span></div>
+  </section>
+
+  <!-- CARD: TABELA -->
+  <section class="card">
+    <header>
+      <p class="title">Clientes cadastrados</p>
+      <p class="subtitle">Busca rápida e atualização da listagem.</p>
+    </header>
+
+    <div class="toolbar">
+      <input id="busca" placeholder="Buscar por nome, documento, cidade…" />
+      <button class="ghost" id="btnAtualizar">Atualizar</button>
+      <span style="font-size:12px;color:#aeb8ca" id="countInfo"></span>
+    </div>
+
+    <div style="overflow:auto">
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>Data</th><th>Tipo</th><th>Documento</th><th>Nome</th>
+            <th>Nascimento</th><th>Email</th><th>CEP</th><th>UF</th>
+            <th>Cidade</th><th>Endereço</th><th>Nº</th><th>Bairro</th><th>Compl.</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"><div class="t" id="toastTitle">Tudo certo!</div><div class="m" id="toastMsg">Cliente cadastrado.</div></div>
 
 <script>
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbxmNFt0b7-ZGhkB4D_QVbSgA620EH6aGWXRhXBJrUyABrogvmSnIpKbkQpTlPdlybds/exec'; // coloque aqui sua URL do Web App
+  // ====== CONFIG ======
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwLdIC3JrXaID3VgUoUvLlRfEuPjydrHcq1wa9j6TwVihnDnsA51AzLj6VTUtJXra3f/exec'; // <-- cole aqui sua URL /exec
 
   const qs = s => document.querySelector(s);
-  const soNumeros = str => (str||'').replace(/\D+/g,'');
+  const soNumeros = s => (s||'').replace(/\D+/g,'');
 
-  function maskCPF(v){ v=soNumeros(v).slice(0,11);
-    if(v.length>9) return v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,'$1.$2.$3-$4');
-    if(v.length>6) return v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');
-    if(v.length>3) return v.replace(/(\d{3})(\d{0,3})/,'$1.$2'); return v; }
-  function maskCNPJ(v){ v=soNumeros(v).slice(0,14);
-    if(v.length>12) return v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/,'$1.$2.$3/$4-$5');
-    if(v.length>8) return v.replace(/(\d{2})(\d{3})(\d{3})(\d{0,4})/,'$1.$2.$3/$4');
-    if(v.length>5) return v.replace(/(\d{2})(\d{3})(\d{0,3})/,'$1.$2.$3');
-    if(v.length>2) return v.replace(/(\d{2})(\d{0,3})/,'$1.$2'); return v; }
-  function maskCEP(v){ v=soNumeros(v).slice(0,8); if(v.length>5) return v.replace(/(\d{5})(\d{0,3})/,'$1-$2'); return v; }
+  function toast(t,m){const el=qs('#toast');qs('#toastTitle').textContent=t;qs('#toastMsg').textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000)}
+  function setConn(ok, txt){qs('#connDot').classList.toggle('ok',ok);qs('#connDot').classList.toggle('err',!ok);qs('#connText').textContent = txt || (ok?'Conectado à planilha':'Sem conexão')}
 
-  function toast(t,m){const el=qs('#toast');qs('#toastTitle').textContent=t;qs('#toastMsg').textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500);}
-  function setConn(ok,text){qs('#connDot').classList.toggle('ok',!!ok);qs('#connDot').classList.toggle('err',!ok);qs('#connText').textContent=text||(ok?'Conectado à planilha':'Sem conexão com a planilha');}
-  function setLoading(btn,loading){btn.disabled=loading;if(loading){btn.dataset.prev=btn.innerHTML;btn.innerHTML=`<span class="spinner"></span><span>Salvando…</span>`;}else{btn.innerHTML=btn.dataset.prev||'<span>Salvar</span>';}}
-  
-  const tipoRadios=document.querySelectorAll('input[name="tipo"]');
-  const lblDocumento=qs('#lblDocumento'), documento=qs('#documento'), lblNome=qs('#lblNome');
-  const nascimentoWrap=qs('#nascimentoWrap'), docErro=qs('#docErro'), cep=qs('#cep'), btnSubmit=qs('#btnSubmit');
+  // Masks
+  function maskCPF(v){v=soNumeros(v).slice(0,11);if(v.length>9)return v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,'$1.$2.$3-$4');if(v.length>6)return v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');if(v.length>3)return v.replace(/(\d{3})(\d{0,3})/,'$1.$2');return v}
+  function maskCNPJ(v){v=soNumeros(v).slice(0,14);if(v.length>12)return v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/,'$1.$2.$3/$4-$5');if(v.length>8)return v.replace(/(\d{2})(\d{3})(\d{3})(\d{0,4})/,'$1.$2.$3/$4');if(v.length>5)return v.replace(/(\d{2})(\d{3})(\d{0,3})/,'$1.$2.$3');if(v.length>2)return v.replace(/(\d{2})(\d{0,3})/,'$1.$2');return v}
+  function maskCEP(v){v=soNumeros(v).slice(0,8);if(v.length>5)return v.replace(/(\d{5})(\d{0,3})/,'$1-$2');return v}
 
-  function setTipo(tipo){if(tipo==='CNPJ'){lblDocumento.textContent='CNPJ';documento.placeholder='00.000.000/0000-00';lblNome.textContent='Razão social';nascimentoWrap.style.display='none';documento.value=maskCNPJ(documento.value);}else{lblDocumento.textContent='CPF';documento.placeholder='000.000.000-00';lblNome.textContent='Nome completo';nascimentoWrap.style.display='grid';documento.value=maskCPF(documento.value);}validarDocumento();}
-  function validarDocumento(){const tipo=document.querySelector('input[name="tipo"]:checked').value;const dig=soNumeros(documento.value);let ok=false,msg='';if(tipo==='CPF'){ok=dig.length===11;if(!ok)msg='CPF deve ter 11 dígitos.';}else{ok=dig.length===14;if(!ok)msg='CNPJ deve ter 14 dígitos.';}docErro.style.display=ok?'none':'block';docErro.textContent=msg;return ok;}
+  // Form behavior
+  const tipoRadios = document.querySelectorAll('input[name="tipo"]');
+  const documento=qs('#documento'), lblDocumento=qs('#lblDocumento'), lblNome=qs('#lblNome'),
+        nascimentoWrap=qs('#nascimentoWrap'), docErro=qs('#docErro'), cep=qs('#cep'), btnSubmit=qs('#btnSubmit');
+
+  function setTipo(tipo){
+    if (tipo==='CNPJ'){lblDocumento.textContent='CNPJ';documento.placeholder='00.000.000/0000-00';lblNome.textContent='Razão social';nascimentoWrap.style.display='none';documento.value=maskCNPJ(documento.value)}
+    else{lblDocumento.textContent='CPF';documento.placeholder='000.000.000-00';lblNome.textContent='Nome completo';nascimentoWrap.style.display='grid';documento.value=maskCPF(documento.value)}
+    validarDocumento();
+  }
+  function validarDocumento(){
+    const t=document.querySelector('input[name="tipo"]:checked').value;
+    const d=soNumeros(documento.value);
+    let ok=false,msg='';
+    if(t==='CPF'){ok=d.length===11; if(!ok) msg='CPF deve ter 11 dígitos.'}
+    else{ok=d.length===14; if(!ok) msg='CNPJ deve ter 14 dígitos.'}
+    docErro.style.display = ok ? 'none' : 'block';
+    docErro.textContent = msg; return ok;
+  }
 
   tipoRadios.forEach(r=>r.addEventListener('change',e=>setTipo(e.target.value)));
-  documento.addEventListener('input',()=>{const t=document.querySelector('input[name="tipo"]:checked').value;documento.value=(t==='CNPJ')?maskCNPJ(documento.value):maskCPF(documento.value);validarDocumento();});
-  cep.addEventListener('input',()=>{cep.value=maskCEP(cep.value);});
+  documento.addEventListener('input',()=>{const t=document.querySelector('input[name="tipo"]:checked').value;documento.value=(t==='CNPJ')?maskCNPJ(documento.value):maskCPF(documento.value);validarDocumento()});
+  cep.addEventListener('input',()=>{cep.value=maskCEP(cep.value)});
 
+  // CEP autofill (ViaCEP)
   async function tryFillAddress(){const c=soNumeros(cep.value);if(c.length!==8)return;try{const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);if(!r.ok)return;const j=await r.json();if(j.erro)return;qs('#uf').value=j.uf||qs('#uf').value;qs('#cidade').value=j.localidade||qs('#cidade').value;qs('#logradouro').value=j.logradouro||qs('#logradouro').value;qs('#bairro').value=j.bairro||qs('#bairro').value;}catch(_){}} 
   cep.addEventListener('blur',tryFillAddress);
 
-  document.getElementById('formCliente').addEventListener('submit',async e=>{
-    e.preventDefault();if(!validarDocumento())return;
-    const data=Object.fromEntries(new FormData(e.target).entries());
-    data.tipo=document.querySelector('input[name="tipo"]:checked').value;
-    data.documento=soNumeros(data.documento);
-    try{setLoading(btnSubmit,true);
-      const resp=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-      const j=await resp.json();
-      if(j&&j.ok){toast('Tudo certo!','Cliente cadastrado com sucesso.');setConn(true,'Conectado à planilha');e.target.reset();setTipo('CPF');}
-      else{throw new Error(j&&j.error||'Não foi possível salvar');}
-    }catch(err){console.error(err);setConn(false,'Erro ao salvar na planilha');toast('Erro ao salvar',String(err.message||err));}
-    finally{setLoading(btnSubmit,false);}
+  // Salvar (usa x-www-form-urlencoded p/ evitar preflight)
+  document.getElementById('formCliente').addEventListener('submit', async (e)=>{
+    e.preventDefault(); if(!validarDocumento()) return;
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    data.tipo = document.querySelector('input[name="tipo"]:checked').value;
+    data.documento = soNumeros(data.documento);
+    const body = new URLSearchParams(data).toString();
+
+    btnSubmit.disabled = true; btnSubmit.innerHTML='<span>Salvando…</span>';
+    try{
+      const resp = await fetch(GAS_URL, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body });
+      const j = await resp.json();
+      if(j && j.ok){ toast('Tudo certo!','Cliente cadastrado.'); e.target.reset(); setTipo('CPF'); await carregarClientes(); }
+      else{ throw new Error(j && j.error || 'Falha ao salvar'); }
+    }catch(err){ console.error(err); toast('Erro ao salvar', String(err.message||err)); }
+    finally{ btnSubmit.disabled=false; btnSubmit.innerHTML='<span>Salvar</span>'; }
   });
 
-  (async function ping(){try{const r=await fetch(`${GAS_URL}?ping=1`);if(r.ok){const txt=await r.text();setConn(true,txt==='pong'?'Conectado à planilha':'Online');}else{setConn(false,'Sem conexão com a planilha');}}catch(_){setConn(false,'Sem conexão com a planilha');}})();
+  // Painel – listagem
+  let cache = [];
+  function formataData(x){ if(!x) return ''; const d=new Date(x); if(isNaN(d)) return x; return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) }
+  function formataNascimento(x){ if(!x) return ''; const d=new Date(x); if(isNaN(d)) return x; return d.toLocaleDateString('pt-BR') }
 
-  qs('#btnReset').addEventListener('click',()=>setTipo('CPF'));
+  async function carregarClientes(){
+    qs('#countInfo').textContent = 'Carregando...';
+    const r = await fetch(GAS_URL);
+    const j = await r.json();
+    cache = j.data || [];
+    renderTabela(cache);
+  }
+  function renderTabela(rows){
+    const q = qs('#busca').value?.toLowerCase()?.trim() || '';
+    const filtrados = !q ? rows : rows.filter(o => {
+      const addr = `${o.logradouro||''} ${o.numero||''} ${o.bairro||''} ${o.cidade||''}`.toLowerCase();
+      return (o.nome||'').toLowerCase().includes(q) ||
+             (o.documento||'').toString().includes(q) ||
+             addr.includes(q);
+    });
+    const tb = qs('#tabela tbody'); tb.innerHTML='';
+    for(const o of filtrados){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formataData(o.criadoEm)}</td>
+        <td>${o.tipo||''}</td>
+        <td>${o.documento||''}</td>
+        <td>${o.nome||''}</td>
+        <td>${formataNascimento(o.nascimento)}</td>
+        <td>${o.email||''}</td>
+        <td>${o.cep||''}</td>
+        <td>${o.uf||''}</td>
+        <td>${o.cidade||''}</td>
+        <td>${o.logradouro||''}</td>
+        <td>${o.numero||''}</td>
+        <td>${o.bairro||''}</td>
+        <td>${o.complemento||''}</td>
+      `;
+      tb.appendChild(tr);
+    }
+    qs('#countInfo').textContent = `${filtrados.length} de ${rows.length} registro(s)`;
+  }
+
+  qs('#busca').addEventListener('input', ()=>renderTabela(cache));
+  qs('#btnAtualizar').addEventListener('click', carregarClientes);
+
+  // Ping + load
+  (async function ping(){
+    try{ const r=await fetch(`${GAS_URL}?ping=1`); setConn(r.ok, r.ok?'Conectado à planilha':'Sem conexão'); }
+    catch(_){ setConn(false,'Sem conexão'); }
+  })();
+  qs('#btnReset').addEventListener('click', ()=>setTipo('CPF'));
   setTipo('CPF');
+  carregarClientes();
 </script>
 </body>
 </html>
