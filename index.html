@@ -3,26 +3,34 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Cadastro e Painel de Clientes</title>
+<title>Cadastro de Clientes</title>
 <meta name="color-scheme" content="dark light"/>
 <style>
-  :root{--bg:#0b0c10;--card:#131417;--line:#2a2f36;--txt:#f5f7fb;--muted:#cfd6e4;--brand:#22c55e;--brand2:#16a34a;--danger:#ef4444;--glass:rgba(255,255,255,.06);--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)}
-  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b0c10,#0f1116);color:var(--txt)}
+  :root{
+    --bg:#0b0c10;--card:#131417;--line:#2a2f36;--txt:#f5f7fb;--muted:#cfd6e4;
+    --brand:#22c55e;--brand2:#16a34a;--danger:#ef4444;--warn:#f59e0b;
+    --glass:rgba(255,255,255,.06);--radius:16px;--shadow:0 10px 30px rgba(0,0,0,.35)
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b0c10,#0f1116);color:var(--txt)}
   header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);background:linear-gradient(180deg,rgba(19,20,23,.85),rgba(19,20,23,.55));border-bottom:1px solid var(--glass)}
   .wrap{max-width:1200px;margin:0 auto;padding:18px 16px;display:flex;gap:14px;align-items:center}
   header img{height:40px;width:auto;object-fit:contain}
   h1{margin:0;font-size:20px}
   .badge{margin-left:auto;font-size:12px;color:#9bb0c8;padding:6px 10px;border:1px solid var(--glass);border-radius:999px}
+
   main{max-width:1200px;margin:28px auto;padding:0 16px;display:grid;gap:22px}
   .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--glass);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
   .card header{all:unset;display:block;padding:18px 18px 0 18px}
   .title{font-size:18px;font-weight:700;margin:0 0 4px}
   .subtitle{font-size:13px;color:var(--muted);margin:0 0 14px}
+
   form{padding:18px}
   .row{display:grid;grid-template-columns:1fr;gap:14px}
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-  @media (max-width: 960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+  @media (max-width:960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
   label{font-size:12px;color:#aeb8ca;display:block;margin:0 0 6px}
   .field{position:relative}
   input,select{width:100%;padding:12px;border:1px solid var(--glass);border-radius:12px;background:#0e1014;color:var(--txt);outline:none;transition:.2s}
@@ -31,30 +39,34 @@
   fieldset{border:1px dashed var(--glass);border-radius:12px;padding:10px 12px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:rgba(255,255,255,.02)}
   fieldset legend{padding:0 6px;font-size:12px;color:#aeb8ca}
   .radio{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#dfe7f6}
+
   .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px;padding:0 18px 18px}
   button{border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
   .primary{background:linear-gradient(180deg,var(--brand),var(--brand2));color:#07270e}
   .ghost{background:#0e1014;color:var(--txt);border:1px solid var(--glass)}
   .danger{background:linear-gradient(180deg,#ef4444,#b91c1c);color:#2b0a0a}
+
+  /* Status de conexão + retorno */
   .statusbar{display:flex;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--glass);background:rgba(0,0,0,.2);font-size:13px;color:#afc4db}
-  .dot{width:8px;height:8px;border-radius:999px;background:#6b7280}.dot.ok{background:var(--brand)}.dot.err{background:var(--danger)}
+  .dot{width:8px;height:8px;border-radius:999px;background:#6b7280}
+  .dot.ok{background:var(--brand)}
+  .dot.err{background:var(--danger)}
+  .feedback{padding:12px 18px;border-top:1px solid var(--glass);background:rgba(0,0,0,.15);font-size:13px}
+  .feedback .ok{color:#86efac}
+  .feedback .err{color:#fecaca}
+
+  /* Toast */
   .toast{position:fixed;right:16px;bottom:16px;background:#0e1014;color:#fff;border:1px solid var(--glass);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);transform:translateY(12px);opacity:0;pointer-events:none;transition:.25s;max-width:420px}
-  .toast.show{transform:translateY(0);opacity:1}.toast .t{font-weight:700;margin-bottom:4px}.toast .m{font-size:13px;color:#cfd6e4}
-  /* tabela */
-  .toolbar{display:flex;gap:10px;align-items:center;padding:14px 18px 0}
-  .toolbar input{max-width:320px}
-  table{width:100%;border-collapse:separate;border-spacing:0 8px;padding:18px}
-  th{font-size:12px;color:#aeb8ca;text-align:left;padding:0 10px}
-  td{background:#0e1014;border:1px solid var(--glass);padding:10px;border-left:none;border-right:none}
-  tr{border-radius:12px} tr td:first-child{border-left:1px solid var(--glass);border-radius:12px 0 0 12px}
-  tr td:last-child{border-right:1px solid var(--glass);border-radius:0 12px 12px 0}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast .t{font-weight:700;margin-bottom:4px}
+  .toast .m{font-size:13px;color:#cfd6e4}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <img src="LOGO_DO_SEU_NEGOCIO.png" alt="Logo"/>
-    <h1>Cadastro & Painel de Clientes</h1>
+    <h1>Cadastro de Clientes</h1>
     <span class="badge">Planilha: CLIENTES</span>
   </div>
 </header>
@@ -116,18 +128,43 @@
       </div>
     </form>
 
-    <div class="statusbar"><span class="dot" id="connDot"></span><span id="connText">Conectando…</span></div>
+    <!-- Status de conexão -->
+    <div class="statusbar">
+      <span class="dot" id="connDot"></span>
+      <span id="connText">Conectando…</span>
+    </div>
+
+    <!-- Retorno de confirmação / erro -->
+    <div class="feedback" id="feedback" style="display:none">
+      <span id="fbIcon">ℹ️</span>
+      <span id="fbText">Mensagem</span>
+    </div>
   </section>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="t" id="toastTitle">Tudo certo!</div>
+  <div class="m" id="toastMsg">Cliente cadastrado com sucesso.</div>
+</div>
 
 <script>
   // ====== CONFIG ======
-  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwLdIC3JrXaID3VgUoUvLlRfEuPjydrHcq1wa9j6TwVihnDnsA51AzLj6VTUtJXra3f/exec'; // <-- cole aqui sua URL /exec
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbwLdIC3JrXaID3VgUoUvLlRfEuPjydrHcq1wa9j6TwVihnDnsA51AzLj6VTUtJXra3f/exec'; // troque pela sua URL /exec
 
   const qs = s => document.querySelector(s);
   const soNumeros = s => (s||'').replace(/\D+/g,'');
 
+  // UI helpers
   function toast(t,m){const el=qs('#toast');qs('#toastTitle').textContent=t;qs('#toastMsg').textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000)}
   function setConn(ok, txt){qs('#connDot').classList.toggle('ok',ok);qs('#connDot').classList.toggle('err',!ok);qs('#connText').textContent = txt || (ok?'Conectado à planilha':'Sem conexão')}
+  function showFeedback(ok, msg){
+    const fb = qs('#feedback'); const txt = qs('#fbText'); const ico = qs('#fbIcon');
+    fb.style.display = 'block';
+    txt.textContent = msg;
+    if(ok){ fb.classList.remove('err'); fb.classList.add('ok'); ico.textContent='✅'; txt.className='ok'; }
+    else  { fb.classList.remove('ok'); fb.classList.add('err'); ico.textContent='❌'; txt.className='err'; }
+  }
 
   // Masks
   function maskCPF(v){v=soNumeros(v).slice(0,11);if(v.length>9)return v.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/,'$1.$2.$3-$4');if(v.length>6)return v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');if(v.length>3)return v.replace(/(\d{3})(\d{0,3})/,'$1.$2');return v}
@@ -159,10 +196,20 @@
   cep.addEventListener('input',()=>{cep.value=maskCEP(cep.value)});
 
   // CEP autofill (ViaCEP)
-  async function tryFillAddress(){const c=soNumeros(cep.value);if(c.length!==8)return;try{const r=await fetch(`https://viacep.com.br/ws/${c}/json/`);if(!r.ok)return;const j=await r.json();if(j.erro)return;qs('#uf').value=j.uf||qs('#uf').value;qs('#cidade').value=j.localidade||qs('#cidade').value;qs('#logradouro').value=j.logradouro||qs('#logradouro').value;qs('#bairro').value=j.bairro||qs('#bairro').value;}catch(_){}} 
+  async function tryFillAddress(){
+    const c=soNumeros(cep.value); if(c.length!==8) return;
+    try{
+      const r=await fetch(`https://viacep.com.br/ws/${c}/json/`); if(!r.ok) return;
+      const j=await r.json(); if(j.erro) return;
+      qs('#uf').value=j.uf||qs('#uf').value;
+      qs('#cidade').value=j.localidade||qs('#cidade').value;
+      qs('#logradouro').value=j.logradouro||qs('#logradouro').value;
+      qs('#bairro').value=j.bairro||qs('#bairro').value;
+    }catch(_){}
+  }
   cep.addEventListener('blur',tryFillAddress);
 
-  // Salvar (usa x-www-form-urlencoded p/ evitar preflight)
+  // Salvar (x-www-form-urlencoded para evitar preflight)
   document.getElementById('formCliente').addEventListener('submit', async (e)=>{
     e.preventDefault(); if(!validarDocumento()) return;
     const data = Object.fromEntries(new FormData(e.target).entries());
@@ -174,66 +221,43 @@
     try{
       const resp = await fetch(GAS_URL, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body });
       const j = await resp.json();
-      if(j && j.ok){ toast('Tudo certo!','Cliente cadastrado.'); e.target.reset(); setTipo('CPF'); await carregarClientes(); }
-      else{ throw new Error(j && j.error || 'Falha ao salvar'); }
-    }catch(err){ console.error(err); toast('Erro ao salvar', String(err.message||err)); }
-    finally{ btnSubmit.disabled=false; btnSubmit.innerHTML='<span>Salvar</span>'; }
+      if(j && j.ok){
+        const msg = j.msg || 'Cliente cadastrado.';
+        toast('Tudo certo!', msg);
+        showFeedback(true, msg);
+        e.target.reset(); setTipo('CPF');
+      }else{
+        const err = (j && j.error) ? String(j.error) : 'Falha ao salvar';
+        showFeedback(false, err);
+        throw new Error(err);
+      }
+    }catch(err){
+      console.error(err);
+      toast('Erro ao salvar', String(err.message||err));
+      showFeedback(false, String(err.message||err));
+    }finally{
+      btnSubmit.disabled=false; btnSubmit.innerHTML='<span>Salvar</span>';
+    }
   });
 
-  // Painel – listagem
-  let cache = [];
-  function formataData(x){ if(!x) return ''; const d=new Date(x); if(isNaN(d)) return x; return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) }
-  function formataNascimento(x){ if(!x) return ''; const d=new Date(x); if(isNaN(d)) return x; return d.toLocaleDateString('pt-BR') }
-
-  async function carregarClientes(){
-    qs('#countInfo').textContent = 'Carregando...';
-    const r = await fetch(GAS_URL);
-    const j = await r.json();
-    cache = j.data || [];
-    renderTabela(cache);
-  }
-  function renderTabela(rows){
-    const q = qs('#busca').value?.toLowerCase()?.trim() || '';
-    const filtrados = !q ? rows : rows.filter(o => {
-      const addr = `${o.logradouro||''} ${o.numero||''} ${o.bairro||''} ${o.cidade||''}`.toLowerCase();
-      return (o.nome||'').toLowerCase().includes(q) ||
-             (o.documento||'').toString().includes(q) ||
-             addr.includes(q);
-    });
-    const tb = qs('#tabela tbody'); tb.innerHTML='';
-    for(const o of filtrados){
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${formataData(o.criadoEm)}</td>
-        <td>${o.tipo||''}</td>
-        <td>${o.documento||''}</td>
-        <td>${o.nome||''}</td>
-        <td>${formataNascimento(o.nascimento)}</td>
-        <td>${o.email||''}</td>
-        <td>${o.cep||''}</td>
-        <td>${o.uf||''}</td>
-        <td>${o.cidade||''}</td>
-        <td>${o.logradouro||''}</td>
-        <td>${o.numero||''}</td>
-        <td>${o.bairro||''}</td>
-        <td>${o.complemento||''}</td>
-      `;
-      tb.appendChild(tr);
-    }
-    qs('#countInfo').textContent = `${filtrados.length} de ${rows.length} registro(s)`;
-  }
-
-  qs('#busca').addEventListener('input', ()=>renderTabela(cache));
-  qs('#btnAtualizar').addEventListener('click', carregarClientes);
-
-  // Ping + load
+  // Ping inicial (mostra se está conectado)
   (async function ping(){
-    try{ const r=await fetch(`${GAS_URL}?ping=1`); setConn(r.ok, r.ok?'Conectado à planilha':'Sem conexão'); }
-    catch(_){ setConn(false,'Sem conexão'); }
+    try{
+      const r=await fetch(`${GAS_URL}?ping=1`);
+      if(r.ok){
+        const t = await r.text();
+        setConn(true, t==='pong' ? 'Conectado à planilha' : 'Online');
+      }else{
+        setConn(false, 'Sem conexão');
+      }
+    }catch(_){
+      setConn(false, 'Sem conexão');
+    }
   })();
+
+  // Reset volta o tipo para CPF
   qs('#btnReset').addEventListener('click', ()=>setTipo('CPF'));
   setTipo('CPF');
-  carregarClientes();
 </script>
 </body>
 </html>
