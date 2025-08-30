@@ -178,7 +178,7 @@
 
   // UI helpers
   function toast(t,m){const el=qs('#toast');qs('#toastTitle').textContent=t;qs('#toastMsg').textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3000)}
-  function setConn(ok, txt){qs('#connDot').classList.toggle('ok',ok);qs('#connDot').classList.toggle('err',!ok);qs('#connText').textContent = txt || (ok?'Conectado à planilha':'Sem conexão')}
+  function setConn(ok, txt){qs('#connDot').classList.toggle('ok',ok);qs('#connDot').classList.toggle('err',!ok);qs('#connText').textContent = txt || (ok?'Online':'Sem conexão')}
   function showFeedback(ok, msg){
     const fb = qs('#feedback'); const txt = qs('#fbText'); const ico = qs('#fbIcon');
     fb.style.display = 'block'; txt.textContent = msg;
@@ -326,7 +326,7 @@
       const r=await fetch(`${GAS_URL}?ping=1`);
       if(r.ok){
         const t = await r.text();
-        setConn(true, t==='pong' ? 'Conectado à planilha' : 'Online');
+        setConn(true, t==='pong' ? 'Online' : 'Online');
       }else{
         setConn(false, 'Sem conexão');
       }
